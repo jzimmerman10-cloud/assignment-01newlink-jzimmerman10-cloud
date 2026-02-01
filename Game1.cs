@@ -15,6 +15,12 @@ public class Game1 : Game
     private Texture2D _background;
 //NPC sprites
     private Texture2D _OldMan;
+    private SimpleAnimation _SimonWalkLeft;
+    private SimpleAnimation _SimonWalkRight;
+    private Vector2 _SimonPosition;
+    private SimpleAnimation _CurrentSimonAnim;
+    private float _SimonSpeed = 50f;
+    private int _SimonDirection = -1;
 //Player
     private SimpleAnimation _CurrentAnimation;
     private SimpleAnimation _PlayerWalkW;
@@ -43,7 +49,7 @@ public class Game1 : Game
         _graphics.PreferredBackBufferHeight = 480;
         _graphics.ApplyChanges();
 
-        _PlayerPosition = new Vector2(300,300);
+        _PlayerPosition = new Vector2(300,200);
         base.Initialize();
     }
 
@@ -57,7 +63,15 @@ public class Game1 : Game
 
         _OldMan = Content.Load<Texture2D>("Zelda1OldMan");
 
-//Player Animations WASD
+        _SimonWalkLeft = new SimpleAnimation(
+            Content.Load<Texture2D>("SimonBelmontWalkLeftSpriteSheet"),
+            324/3, 149, 3, 6);
+        _SimonWalkRight = new SimpleAnimation(
+            Content.Load<Texture2D>("SimonBelmontWalkRightSpriteSheet"),
+            324/3, 149, 3, 6);
+        _SimonPosition = new Vector2(400, 300);
+
+//Player Animations WASD/Arrow keys
         _PlayerWalkW = new SimpleAnimation(
             Content.Load<Texture2D>("LinkUpSpriteSheet"),
             105/2, 51, 2, 8
@@ -76,14 +90,29 @@ public class Game1 : Game
         );
 
         _CurrentAnimation = _PlayerWalkS;
+        _CurrentSimonAnim = _SimonWalkLeft;
     }
 
     protected override void Update(GameTime gameTime)
     {
         KeyboardState kbCurrentState = Keyboard.GetState();
-        //SimpleAnimation NewAnimation = null;
+        float DeltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+        _SimonPosition.X += _SimonDirection * _SimonSpeed * DeltaTime;
         _message = "";
     _PlayerInput = Vector2.Zero;
+
+        if(_SimonPosition.X < 100)
+        {
+            _SimonDirection = 1;
+            _CurrentSimonAnim = _SimonWalkRight;
+        }
+        else if(_SimonPosition.X > 500)
+        {
+            _SimonDirection = -1;
+            _CurrentSimonAnim = _SimonWalkLeft;
+        }
+
         #region arrow keys
 
         if(kbCurrentState.IsKeyDown(Keys.Up) || kbCurrentState.IsKeyDown(Keys.W))
@@ -115,6 +144,10 @@ public class Game1 : Game
         {
             _CurrentAnimation.Update(gameTime);
         }
+        if(_CurrentSimonAnim != null)
+        {
+            _CurrentSimonAnim.Update(gameTime);
+        }
         #endregion
 
 _PlayerPosition += _PlayerInput * 5;
@@ -137,6 +170,8 @@ _PlayerPosition += _PlayerInput * 5;
         _spriteBatch.Draw(_background, BackgroundRect, Color.White);
         _spriteBatch.DrawString(_Font, _message, Vector2.Zero, Color.Red);
         _spriteBatch.Draw(_OldMan, new Rectangle(200,45,50,50), Color.White);
+
+        _CurrentSimonAnim.Draw(_spriteBatch, _SimonPosition, SpriteEffects.None);
         //Player Animation
         _CurrentAnimation.Draw(_spriteBatch, _PlayerPosition, SpriteEffects.None);
 

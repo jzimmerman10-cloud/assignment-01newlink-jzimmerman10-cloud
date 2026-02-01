@@ -68,6 +68,30 @@
 /processorParam:TextureFormat=Compressed
 /build:SansFont.spritefont
 
+#begin SimonBelmontWalkLeftSpriteSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SimonBelmontWalkLeftSpriteSheet.png
+
+#begin SimonBelmontWalkRightSpriteSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SimonBelmontWalkRightSpriteSheet.png
+
 #begin Zelda1OldMan.png
 /importer:TextureImporter
 /processor:TextureProcessor
